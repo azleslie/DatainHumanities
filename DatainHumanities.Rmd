@@ -2,9 +2,12 @@
 title: "What can be Data in the Humanities?"
 author: "[Alex Leslie](https://english.rutgers.edu/cb-profile/ahl80.html)"
 date: "9/22/2019"
-output: pdf_document
+output:
+  pdf_document:
+    toc: TRUE
 editor_options: 
   chunk_output_type: console
+urlcolor: blue
 ---
 
 ```{r setup, include=FALSE}
@@ -162,7 +165,7 @@ What kind of work could be produced by building data from these documents?
 
 Lauren F. Klein's "The Image of Absence: Archival Silence, Data Visualization, and James Hemings" reorganizes the Thomas Jefferson correspondence into an alternative "Hemings Archive" - even though the enslaved Hemings could not write - by visualizing epistolary exchanges that mentioned him.^[Klein, Lauren F. "The Image of Absence: Archival Silence, Data Visualization, and James Hemings" in *American Literature* 85.4 (December 2013): 661-688.] (Left, below.)
 
-The greatest influence on my own interest in DH was William Cronon's *Nature's Metropolis*, which well predates the naming or debating of a "digital humanities" but nonetheless does superb work on the geography of capital with data drawn from bankrupcy courts.^[Cronon, William. *Nature's Metropolis*. New York: W. W. Norton & Co., 1991.] (Right, below.)
+The greatest influence on my own interest in DH was William Cronon's *Nature's Metropolis*, which well predates the naming or debating of a "digital humanities" but nonetheless does superb work on the geography of capital with data drawn from bankrupcy courts in order to illustrate the scope of Chicago's financial influence on the postbellum Midwest.^[Cronon, William. *Nature's Metropolis*. New York: W. W. Norton & Co., 1991.] (Right, below.)
 
 ![Klein's alternate archive](images/klein_image_of_absence.png){ width=50% } ![Cronon's geography of capital](images/cronon_geography_of_capital.jpg){ width=50% } 
 
@@ -213,7 +216,7 @@ Project Gutenberg is unfortunately a relatively small collection of texts. It's 
 
 Hathitrust offers a couple different means of accessing texts. It has a .pdf download option on the page for every item that allows you to either "Download whole book (PDF)" or "Download pages (PDF)" by click the upper-right corner of each page that you want to select. The quickest way to get the plain text of a Hathitrust item is by clicking "text-only view of this item." There isn't a direct way to download this as just one .txt file, but you could just copy and paste it. The trouble with this Hathitrust view is that it turns each page into a single line of text. This would be a problem if you were working with something like poetry, where line breaks matter. Blank space is data too. But this view presents other issues as well, such as the way the running title gets lumped in with the body text.^[Hathitrust does have a [browser API](https://babel.hathitrust.org/cgi/htdc) that allows downloads of the full text, but each page will be a separate .txt file in a folder that also contains an image and an .xml file for each page - which ends up making it pretty large. If you have plenty of hard drive space, this can be a useful format, but probably only if you have a lot of space and are working with quite a few texts. Hathitrust does offer several other options to experienced computational researchers for obtaining large numbers of texts, but they're much more advanced.]
 
-It is also possible to turn a downloaded .pdf file - from Hathitrust or elsewhere - into a .txt file with Optical Character Recognition (OCR) software. Adobe Acrobat software available on campus computers can carry this out, as can some other free programs, such as [PDF-XChange Editor](https://www.tracker-software.com/product/pdf-xchange-editor) for Windows, which I've found useful, or [pdftotext](https://pypi.org/project/pdftotext/) for Mac, which Francesca has recommended. Once a .pdf has a OCR layer, it can be exported as a friendly .txt file.
+It is also possible to turn a downloaded .pdf file - from Hathitrust or elsewhere - into a .txt file with Optical Character Recognition (OCR) software. Adobe Acrobat software available on campus computers can carry this out, as can some other free programs, such as [PDF-XChange Editor](https://www.tracker-software.com/product/pdf-xchange-editor) for Windows, which I've found useful, or [pdftotext](https://pypi.org/project/pdftotext/) for Mac. Once a .pdf has a OCR layer, it can be exported as a friendly .txt file.
 
 If you're working with a non-massive number of texts not available on Gutenberg, I recommend the Internet Archive at [archive.org](https://archive.org/), which has 20 million mostly-free texts (and many the same files available on Hathitrust).
 
@@ -250,8 +253,6 @@ volume <- volume[-running_titles]
 
 In much the same fashion that we've been cleaning these texts, any textual feature - vocabulary, sentence or line length, rhyme, meter, character development, themes, plot arcs - can be described and represented as data, though some of these are trickier than others. Some can be measured with just the text itself (vocabulary, length). Some will require a bit of prior non-computational analysis to identify (character, theme). Others will require reference files that supply additional information, such as a dictionary (part of speech, syllables, stress) or a sentiment dataset.^[We can get these easily online too. The `tidyword` package for R contains sentiment datasets, and dictionaries abound: `dictionary <- readLines("http://www.gutenberg.org/cache/epub/29765/pg29765.txt")`]
 
-\newpage
-
 To save your work to disk, just use `writeLines` and give it a file name.
 ```{r, eval=FALSE}
 writeLines(volume, "thompson_ethiope_lays.txt")
@@ -265,7 +266,7 @@ Some scholars have generated character networks in novels based on name co-occur
 
 ![Piper's network plot cross-sections](images/piper_network_1.jpg){ width=40% } ![Piper's network plot cross-sections](images/piper_network_2.jpg){ width=40% }
 
-Others have extracted location names (there are a number of tools for doing so, including the [Stanford Named Entity Recognizer](https://nlp.stanford.edu/software/CRF-NER.shtml)).^[I recommend this introduction if NER is something you're interested in pursuing: [](http://www.themacroscope.org/2.0/using-the-stanford-named-entity-recognizer-to-extract-data-from-texts/).] Francesca Gianetti, our Digital Humanities librarian at Rutgers, has previously run a [tutorial mapping Henry James' *A Portrait of a Lady*](https://francescagiannetti.com/lab-2-making-digital-maps/).
+Others have extracted location names (there are a number of tools for doing so, including the [Stanford Named Entity Recognizer](https://nlp.stanford.edu/software/CRF-NER.shtml)).^[I recommend [this introduction](http://www.themacroscope.org/2.0/using-the-stanford-named-entity-recognizer-to-extract-data-from-texts/) if NER is something you're interested in pursuing.] Francesca Giannetti, our Digital Humanities librarian at Rutgers, has previously run a [tutorial mapping Henry James' *A Portrait of a Lady*](https://francescagiannetti.com/lab-2-making-digital-maps/).
 
 Most quantitative textual analysis projects, however, deploy datasets of many texts. The flashiest of these projects use entire digitized libraries, but this is not the only possibility. Datasets of texts can be assembled according to many different principles depending on the inquiry. Focused inquiries - ones that ask questions particular to a particular "complete" group of texts - can reveal a lot with considerable confidence even with a relatively small number of texts. Key here is to clearly define the terms of inclusion in a manner consistent with the mode of inquiry. For example, you might assemble a dataset based on:
 
@@ -276,11 +277,11 @@ Most quantitative textual analysis projects, however, deploy datasets of many te
 
 Some pre-assembled datasets can be found online. How would you go about organizing one of your own? Like everything else, this too can vary depending on the project. Nonetheless, a safe starting point - and in most cases a good ending point - would be a simple folder, or directory, containing each text as an individual, cleaned but pre-tokenized .txt file.
 
-Once we begin to ask questions of many texts, the floodgates really open. Instead of mapping a single text, Matthew Wilkens maps the "The Geographic Imagination of Civil War-Era American Fiction."^[Wilkens, Matthew. "The Geographic Imagination of Civil War-Era American Fiction." *American Literary History* 25.4 (2013): 803-840.] Any feature tracked in a single text can be tracked across many texts to observe broader patterns in a particular group or over time.
+Once we begin to ask questions of many texts, the floodgates really open. Instead of mapping a single text, Matthew Wilkens maps the "The Geographic Imagination of Civil War-Era American Fiction" by tracking named locations and their geographic distribution.^[Wilkens, Matthew. "The Geographic Imagination of Civil War-Era American Fiction." *American Literary History* 25.4 (2013): 803-840.] Any feature tracked in a single text can be tracked across many texts to observe broader patterns in a particular group or over time.
 
 ![Wilkens' geographic imagination](images/wilkens_geographic_imagination.png){ width=60% }
 
-To download the materials for this workshop, visit [https://github.com/azleslie/DatainHumanities](https://github.com/azleslie/DatainHumanities).
+To download the materials from this workshop to work through them on your own, visit [https://github.com/azleslie/DatainHumanities](https://github.com/azleslie/DatainHumanities). If you're new to R, I recommend starting out with the [RStudio Cloud](https://rstudio.cloud); all that's needed is a Google account and you can have an RStudio environment up in seconds.
 
 Thanks for coming!
 
