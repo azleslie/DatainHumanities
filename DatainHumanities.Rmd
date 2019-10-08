@@ -283,6 +283,8 @@ Once we begin to ask questions of many texts, the floodgates really open. Instea
 
 To download the materials from this workshop to work through them on your own, visit [https://github.com/azleslie/DatainHumanities](https://github.com/azleslie/DatainHumanities). If you're new to R, I recommend starting out with the [RStudio Cloud](https://rstudio.cloud); all that's needed is a Google account and you can have an RStudio environment up in seconds.
 
+Finally, we would really appreciate it if you took a minute to [fill out our brief feedback survey](https://rutgers.ca1.qualtrics.com/jfe/form/SV_a3itiZN18dY3fc9).
+
 Thanks for coming!
 
 
