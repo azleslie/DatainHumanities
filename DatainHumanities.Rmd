@@ -17,25 +17,25 @@ library("dplyr")
 library("knitr")
 ```
 
-Welcome to this introductory workshop on data in the humanities! This workshop is designed as an introduction to identifying potential data in the wild of humanistic sources. We'll also practice what is often the most discouraging part of the whole process: translating these materials into usable formats. In the process, this workshop will provide a soft introduction to programming and the idea of data. We'll also survey some examples of scholarship that does this well and discuss some of the costs and benefits of translating into data. One of the goals is a reminder that humanists have always used data in scholarship - indeed, well before the advent of the database search made digital humanists of us all. 
+Welcome to this introductory workshop on data in the humanities! This workshop is designed as an introduction to the first and often highest hurdle in the whole process: translating materials into usable data formats. In the process, this workshop will provide a soft introduction to programming, survey some examples of scholarship that works with data effectively, and discuss some of the costs and benefits of translating into data. One of the goals is a reminder that humanists have always used data in scholarship, even before the advent of the database search made digital humanists of us all. 
 
-Take a look around: you're in RStudio, an environment that makes coding in R more transparent. Your window is divided into four segments. In the upper right, you'll see the environment: this displays all the objects you have loaded into memory (currently none). In the upper left, you'll see the script editor: this is the place to work on code that you're currently writing (or borrowing from elsewhere!). To run code in code chunks (the grey chunks), you can either press Ctrl+Enter to run single lines or click the green arrow to run the entire chunk (Ctrl+Shift+Enter will do the same). In the lower left, you'll see the console: this is where code actually executes and where the output prints. In the lower right, you'll see a few different things. The "Files" tab shows whatever files live in the directory (or folder) that R is currently working in; if you run any plots, they'll show up in the "Plots" tab; you can also get help in the "Help" tab.
+Take a look around: you're in RStudio, an environment that makes coding in R more transparent. Your window is divided into four segments. In the upper right, you'll see the environment: this displays all the objects you have loaded into memory (currently none). In the upper left, you'll see the script editor: this is the place to work on code that you're currently writing (or borrowing from elsewhere!). To run code in code chunks (the grey chunks), you can either press Ctrl+Enter to run single lines or click the green arrow to run the entire chunk. In the lower left, you'll see the console: this is where code actually executes and where the output prints. In the lower right, you'll see a few different things. The "Files" tab shows whatever files live in the directory (or folder) that R is currently working in; if you run any plots, they'll show up in the "Plots" tab; you can also get help in the "Help" tab.
 
 To start, if you're using your own computer, run the section of setup code above by clicking the green arrow in the upper right of the grey box.
 
 # What is Data?
 
-For our purposes, we can think of data as a set of atomic, regularized observations that can be organized into categories for the sake of foregrounding broader patterns of relation. Data, then, is something we do: it is the product of one kind of analysis undertaken in order to conduct another kind of analysis. It's easy to overlook the choices entailed here when it comes to things we've come to readily accept as data, like a timestamp. But awareness of this fact helps
+For our purposes, we can think of data as a set of atomic, regularized observations that can be organized into categories for the sake of foregrounding broader patterns of relation. Data, then, is something we do: it is the product of one kind of analysis undertaken in order to conduct another kind of analysis. It's easy to overlook the choices entailed here when it comes to things we've come to readily accept as data, like a timestamp. But awareness of this fact helps us better understand both the limits of the data we encounter and the uses of transforming sources into data.
 
 There are several different types of data:
 
-- Numerical
-  - Discrete (1, 5, 180; the number of books, people)
-  - Continuous (4.66, 30.2%, .76; distances, percentages, prices)
-- Categorical
-  - Boolean (true/false)
-  - Contained (letters, congressional party membership)
-  - Proliferating (shades of color, subgenres)
+* Numerical
+    + Discrete (1, 5, 180; the number of books, people)
+    + Continuous (4.66, 30.2%, .76; distances, percentages, prices)
+* Categorical
+    + Boolean (true/false)
+    + Contained (letters, congressional party membership)
+    + Proliferating (shades of color, subgenres)
 
 Often our data is compound. Technically, the only simple categorical types are boolean and individual characters. Any combination of characters - words, sentences, books - is already multiple bits of data strung together. We call this a *character string*. 
 
@@ -44,7 +44,7 @@ Of course, we don't really work with just one datum. Computers, like human reade
 c("MA", "NH", "NH", "NH", "NH", "VT", "NH", "NH", "VT", "VT")
 ```
 
-What we've done here is taken several categorical elements (state postal abbreviations) and combined them into a vector by using the basic function `c`. A function is anything that operates on data, and in R the data on which we want a function to operate is placed within parentheses and separated by commas. If you run the line of code above, it'll simply print in the console. Note that each element remains separate in a vector: we haven't merged them. If we want to save it as an object in memory for later use, we simply add an arrow, `<-`, pointing to whatever you want to name that object. This is the basic syntax of R.
+Here several categorical elements (state postal abbreviations) are combined into a vector with the basic function `c`. A function is anything that operates on data, and in R the data on which we want a function to operate is placed within parentheses and separated by commas. If you run the line of code above, it'll simply print in the console. Note that each element remains separate in a vector: we haven't merged them. If we want to save it as an object in memory for later use, we simply add an arrow, `<-`, pointing to whatever you want to name that object. This is the basic syntax of R.
 ```{r}
 states <- c("MA", "NH", "NH", "NH", "NH", "VT", "NH", "NH", "VT", "VT")
 ```
@@ -90,12 +90,12 @@ paste(towns, states, sep=", ")
 
 Spreadsheet editors tend to have easy merging commands as well. In Google Sheets, for example, it's `=textjoin(", ", 1, K1, J1)` (replacing "K1" and "J1" with whichever cells are to be merged).
 
-That said, it's still possible to separate out one variable into two, but irregularities in your data can cause errors more readily. Here is a line of code that separates out first names, but if I had included periods after first initials ("J." instead of "J") it would require a bit more tweaking.
+It's still possible to separate out one variable into two, but irregularities in your data can cause errors more readily. Here is a line of code that separates out first names, but if I had included periods after first initials ("J." instead of "J") it would require a bit more tweaking.
 ```{r}
 gsub("(^\\w+) \\w+$", "\\1", names)
 ```
 
-When inheriting spreadsheets from someone or somewhere else, these are two of the most common operations necessary for cleaning before analysis can begin. But there are a lot of even more powerful functions that can be carried out in an instant in a programming language like R that are much trickier otherwise. For example, you may want to transpose a spreadsheet, flipping the rows and columns, or you may have values in one column that should be separated out and spread across two columns. A simple `t` or `spread` function, respectively, would carry out these tasks in an instant.
+When inheriting spreadsheets from someone or somewhere else, these are two of the most common operations necessary for cleaning before analysis can begin. But there are more powerful functions that can be carried out in an instant in a programming language like R that are much trickier otherwise. Transposing a spreadsheet, flipping the rows and columns, just requires one `t` function; separating out alternating values in one column and spread across two columns can be done with `spread`.
 
 But there's other data in our archival document too. For example, some entries aren't individual subscribers: they're other newspapers. When transcribing, we want to be information-inclusive in order to capture as much of the richness of the data as possible. In this case, we can easily render qualitative information as a categorical variable.
 ```{r}
@@ -103,7 +103,7 @@ paper <- c(0, 0, 0, 0, 0, 0, 0, 0, 1, 0)
 data.frame(Name=names, Gender=genders, Town=towns, State=states, Paper=paper)
 ```
 
-There might be further implicit or noncharacter information contained in archival materials. This might include marginalia in printed documents or physical characteristics of materials. In this example, some names are crossed out, marking the termination of their subscription. Subscription books, like many other manuscript records, were living documents. Today sites like github.com keep track of version control; in the nineteenth century, editors added names and crossed out others until their ledgers became illegible, at which point they began new ones. It's impossible to tell when a name was crossed out here, but knowing the logic of the record, we can acknowledge that any unredacted names were still subscribers at the moment of transition into a new ledger. This might help us compare data and give us a glimpse into the temporality internal to the record.
+There might be further implicit or noncharacter information contained in archival materials. This might include marginalia in printed documents or physical characteristics of materials. Some names are crossed out here; while it's impossible to know when they were crossed out, we know that their subscriptions ended before the life of this ledger did. This gives us a snapshot of a single moment of the data, which otherwise spans a couple years, and could help us better understand the whole.
 ```{r}
 cancel <- c(1, 1, 0, 1, 1, 1, 1, 1, 0, 1)
 ledger <- data.frame(Name=names, Gender=genders, Town=towns, State=states,
@@ -170,18 +170,19 @@ The greatest influence on my own interest in DH was William Cronon's *Nature's M
 
 There are a number sources of digitized texts online. The most reliable of these is [Project Gutenberg](gutenberg.com), which contains transcriptions of some 60,000 books, fictional and nonfictional.
 
-On the Gutenberg page for any given book, there will be several format options: the most amiable one is the most basic one, the "Plain Text UTF-8" format. Copying and pasting this into a plain notepad .txt document (not a Word .docx document) is all that's necessary to begin working with this text as data. Like a .csv file, this is the simplest and smallest format for plain text data, which makes it the most reliable to work with. And again, any text file in, say, Microsoft Word's .docx format can be turned into a .txt format in the "Save as" menu.
+On the Gutenberg page for any given book, there will be several format options: the most amiable one is the most bare-bones, the "Plain Text UTF-8" format. Copying and pasting this into a plain notepad .txt document (not a Word .docx document) is all that's necessary to begin working with this text as data. Like a .csv file, this is the simplest and smallest format for plain text data, which makes it the most reliable to work with. And again, any text file in, say, Microsoft Word's .docx format can be turned into a .txt format in the "Save as" menu.
 
-Even more easily, you might scrape this text directly off the web and into an object in your computer's memory. Here is the economist and sociologist Thorstein Veblen's *The Theory of the Leisure Class* (1899). We can read it into an object in memory with `readLines`.
+Even more easily, you might scrape this text directly off the web and into an object in your computer's memory with `readLines`. Here is Thorstein Veblen's *The Theory of the Leisure Class* (1899).
 ```{r}
 book <- readLines("http://www.gutenberg.org/cache/epub/833/pg833.txt")
 ```
 
-Type "book" into your console and click enter. If you scroll up to the top, you'll see a bunch of stuff that isn't part of the book proper: website metadata, text metadata, an introduction. We'll want to trim that stuff off.
-If you went to the webpage we got it from, you could check to see that the book begins with a line that reads "FIRST PART" and ends with one that reads "Well, we must trust that look of hers." If we search the book object for elements containing those exact strings of characters, we'll find the exact position for the start and the end of our desired text. The `grep` function does this.
+Type "book" into your console and click enter. If you scroll up to the top, you'll see a bunch of stuff that isn't part of the book proper: website metadata, text metadata, an introduction. We'll want to trim that off.
+
+If you went to the webpage we got it from, you could check to see that the book begins with a line that reads "THE THEORY OF THE LEISURE CLASS" and ends with one that reads "use and the need of direct and forcible speech." If we search the book object for elements containing those exact strings of characters, we'll find the exact position for the start and the end of our desired text. The `grep` function does this. I've included a `^` and a `$` because `grep` is otherwise inclusive and will return any longer character strings that happen to include our desired string as well: these serve as metacharacters specifying a hard start and a hard end.
 ```{r}
-start_line <- grep("THE THEORY OF THE LEISURE CLASS", book)
-end_line <- grep("use and the need of direct and forcible speech.", book)
+start_line <- grep("^THE THEORY OF THE LEISURE CLASS$", book)
+end_line <- grep("^use and the need of direct and forcible speech.$", book)
 
 book <- book[start_line:end_line]
 ```
@@ -196,7 +197,7 @@ We could break this book down to individual characters. There probably isn't muc
 book_words <- unlist(strsplit(book, "\\W+"))
 ```
 
-We could just as easily split our text up into sentences. The only thing to change would be the regular expression, which now includes all the characters that signal the end of a sentence as triggers for splitting the character string. A period needs to be designated as `\\.` because it can mean other things in regular expressions (namely, any character whatsoever). Before doing that, though, it would be necessary to substitute out common periods that don't end sentences. The `gsub` function makes substitutions: the first input is the searched text, the second input is the desired replacement, and the third input is the object. This is essentially just like ctrl+f+replace, but the usefulness of doing this computationally really kicks in when you need to search for a regular expression rather than an exact character string.
+We could just as easily split our text up into sentences. The only thing to change would be the regular expression, which now includes all the characters that signal the end of a sentence as triggers for splitting the character string. A period needs to be designated as `\\.` because it is a regular expression metacharacter (namely, any character whatsoever). Before doing so, it would be necessary to substitute out common periods that don't end sentences. The `gsub` function makes substitutions: the first input is the searched text, the second input is the desired replacement, and the third input is the object.
 ```{r}
 book <- gsub("Mrs.", "Mrs", book)
 book <- gsub("Mr.", "Mr", book)
@@ -242,9 +243,9 @@ Insertion | pluppy | +l | 1
 Deletion | pupy | -p | 1
 Substitution | poppy | u->o | 1
 
-Since `grep` and `agrep` are inclusive, they'll also grab longer lines that include the desired (or approximate) character string. To filter this out just requires a couple `nchar` functions.
+Since `agrep` is inclusive, it'll also grab longer lines that include the desired (or approximate) character string. To filter this out just requires a couple `nchar` functions.
 ```{r}
-running_titles <- agrep("Ethiope Lays. ", volume, max.distance=5, ignore.case=TRUE)
+running_titles <- agrep("Ethiope Lays. ", volume, max.distance=6, ignore.case=TRUE)
 
 running_titles <- which(nchar(volume[running_titles]) < nchar("Ethiope Lays. ") + 8)
 
@@ -283,6 +284,8 @@ Some pre-assembled datasets can be found online. How would you go about organizi
 Once we begin to ask questions of many texts, the floodgates really open. Instead of mapping a single text, Matthew Wilkens maps the "The Geographic Imagination of Civil War-Era American Fiction."^[Wilkens, Matthew. "The Geographic Imagination of Civil War-Era American Fiction." *American Literary History* 25.4 (2013): 803-840.] Any feature tracked in a single text can be tracked across many texts to observe broader patterns in a particular group or over time.
 
 ![Wilkens' geographic imagination](images/wilkens_geographic_imagination.png){ width=60% }
+
+To download the materials for this workshop, visit [https://github.com/azleslie/DatainHumanities](https://github.com/azleslie/DatainHumanities).
 
 Thanks for coming!
 
